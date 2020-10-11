@@ -1,0 +1,106 @@
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>3D App</title>
+		
+		<!-- jQuery -->
+		<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+		
+		<!-- Bootstrap -->
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
+		<!-- AR -->
+		<script src="./js/lib/aframe.min.js"></script>
+		<script src="./js/lib/aframe-ar.min.js"></script>
+		<script src="./js/lib/three-spritetext.min.js"></script>
+		<script src="./js/lib/3d-force-graph-ar.min.js"></script>
+		
+		<script> localStorage.clear(); </script>
+	</head>
+
+	<body>
+		<div class="container-fluid">
+			<div class="row">
+				<!--
+				<div class="col-md-8 border-right border-bottom" style="padding: 20px">
+					<div id="3d-graph">
+					</div>
+				</div>
+				-->
+				<div id="3d-graph"></div>
+
+				<div class="col-md-4" style="padding: 20px">
+					<div class="form-group">
+						<label for="graph-size">Graph's size</label>
+						<input type="number" class="form-control" id="graph-size" placeholder="Enter graph's size">
+					</div>
+					<button id="gen_btn" type="button" class="btn btn-primary" onclick="genGraph()">Generate Graph</button>
+				</div>
+			</div>
+
+			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#graph_information_modal" onclick="iterate()">
+				Graph Information
+			</button>
+		
+			
+			<!-- 
+				GRAPH INFORMATION MODAL 
+			-->
+			<div class="modal fade" id="graph_information_modal" tabindex="-1" role="dialog" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						
+						<div class="modal-header">
+							<h5 class="modal-title">Graph Information</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+
+						<div class="modal-body">
+							<p id="nodes_block">
+								<p>Nodes:</p>
+								<ul id="nodes_list"></ul>
+							</p>
+						</div>
+
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-primary">Save changes</button>
+						</div>
+					
+					</div>
+				</div>
+			</div>
+			<!-- 
+				END MODAL 
+			-->
+
+
+		</div>
+
+		<script src="./js/main.js"></script>
+		<script>
+			function genGraph() {
+				var gData = createGraph();
+				localStorage.setItem('graph', JSON.stringify(gData));
+				
+				drawGraph(gData);
+			}
+
+			function iterate() {
+				const nodes_list = document.getElementById("nodes_list");
+
+				// Clean previous DOM's elements inside 'nodes_list'.
+				nodes_list.innerHTML = "";
+
+				/* Create a new list of nodes. */
+				const gData = JSON.parse(localStorage.getItem('graph'));
+				gData['nodes'].forEach(elem => {
+					nodes_list.innerHTML += "<li>" + elem.id + "</li>";
+				});
+			}
+		</script>
+	</body>
+</html>
