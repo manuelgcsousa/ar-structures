@@ -1,4 +1,4 @@
-# ar-graphs
+# ar-structures
 Visualization of Hierarchical Structures through Virtual and Augmented Reality Techniques
 
 ## Authors
