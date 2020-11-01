@@ -2,18 +2,61 @@
  * createGraph().
  */
 function createGraph() {
-	const N = parseInt((document.getElementById('graph-size').value));
-	const gData = {
-		nodes: [...Array(N).keys()].map(i => ({ id: i })),
-		links: [...Array(N).keys()]
-			.filter(id => id)
-			.map(id => ({
-				source: id,
-				// fazer controlo de ligações.
-				target: Math.round(Math.random() * (id - 1))
-			}))
-	};
+	var nodes_list = JSON.parse(localStorage.getItem('nodes'));
+	var links_list = JSON.parse(localStorage.getItem('links'));
+	
+	/* Criação de uma lista onde ligações de 'marriage' aparecem primeiro. */
+	var links_list_ordered_by_marriage = [];
+	links_list.forEach(link => {
+		if (link.relation === 'marriage')
+			links_list_ordered_by_marriage.unshift(link);
+		else
+			links_list_ordered_by_marriage.push(link);
+	});
+	
+	// Cópia de todos os links para ser usada em 'gData'.
+	var nodes = nodes_list.map(node => ({ id: node }));
+	var links = [];
+	
+	links_list_ordered_by_marriage.forEach(link => {
+		if (link.relation === 'marriage') {
+			const ghost_node = { 'id': ('__Ghost_' + link.source + '_' + link.target + '__') };
+			nodes.push(ghost_node);
 
+			// Adicionar o nodo 'ghost' aos respetivos Source e Target.
+			nodes.map(node => {
+				if (node.id === link.source || node.id === link.target)
+					node['ghost'] = ghost_node.id;
+			});
+
+			const source2ghost = { 'source': link.source, 'target': ghost_node.id };
+			const target2ghost = { 'source': link.target, 'target': ghost_node.id };
+			links.push(source2ghost);
+			links.push(target2ghost);
+			links.push(link);
+		}
+
+		if (link.relation === 'ascending') {
+			const ghost = nodes.filter(node => {
+				if (node.id === link.source)
+					if (node['ghost'])
+						return node;
+			})[0];
+			
+			if (ghost === undefined) {
+				links.push(link);
+			} else {
+				const new_link = { "source": ghost.ghost, "target": link.target };
+				links.push(new_link);
+			}
+		}
+	});
+
+	const gData = {
+		nodes: nodes,
+		links: links 
+	}
+	
 	return gData;
 }
 
@@ -27,19 +70,33 @@ function drawGraph(gData) {
 			.linkDirectionalParticleColor(() => 'green')
 			.linkDirectionalParticleWidth(10)
 			.nodeAutoColorBy('group')
-			.linkWidth(1)
+			// .nodeColor('green')
+			.linkWidth(0.5)
 			.linkOpacity(0.9)
-			.nodeThreeObject(({ id }) => new THREE.Mesh(
-				[
-					new THREE.BoxGeometry(15,15,15),
-				][id%1],
-				new THREE.MeshLambertMaterial({
-					// controlo da cor do objeto 3D.
-					color: 100, // Math.round(Math.random() * Math.pow(2, 24)),
-					transparent: false,
-					opacity: 1
-				})
-			))
+			.nodeThreeObject(node => {
+				if (node.id.startsWith('__Ghost')) {
+					 var solid = new THREE.Mesh([
+						 new THREE.SphereGeometry(5, 5, 5)
+					 ][0],
+						new THREE.MeshLambertMaterial({
+							color: 'red', 
+							transparent: true,
+							opacity: 0.9
+						})
+					 );
+
+					return solid;
+				} else {
+					const sprite = new SpriteText(node.id);
+					sprite.color = node.color;
+					sprite.textHeight = 10;
+					return sprite;
+				}
+			})
+			.linkThreeObject(link => {
+				if (link.relation === 'marriage')
+					link.color = '#009419';
+			})
 			.linkPositionUpdate((sprite, { start, end }) => {
 				const middlePos = Object.assign(...['x', 'y', 'z'].map(c => ({
 					[c]: start[c] + (end[c] - start[c]) / 2 // calc middle point
@@ -48,6 +105,7 @@ function drawGraph(gData) {
 				// position sprite.
 				Object.assign(sprite.position, middlePos);
 			})
+			.glScale(50) // Quanto maior a escala, menor o graph.
 			.graphData(gData);
 }
 

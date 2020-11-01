@@ -16,10 +16,10 @@
 		<script src="./js/lib/three-spritetext.min.js"></script>
 		<script src="./js/lib/3d-force-graph-ar.min.js"></script>
 		
-		<script> localStorage.clear(); </script>
+		<script> /* localStorage.clear(); */ </script>
 	</head>
 
-	<body>
+	<body onload="genGraph()">
 		<div id="3d-graph"></div>
 
 		<div class="container-fluid">
@@ -36,7 +36,7 @@
 						<label for="graph-size">Graph's size</label>
 						<input type="number" class="form-control" id="graph-size" placeholder="Enter graph's size">
 					</div>
-					<button id="gen_btn" type="button" class="btn btn-primary" onclick="genGraph()">Generate Graph</button>
+					<!-- <button id="gen_btn" type="button" class="btn btn-primary" onclick="genGraph()">Generate Graph</button> -->
 				</div>
 			</div>
 
@@ -87,6 +87,8 @@
 				var gData = createGraph();
 				localStorage.setItem('graph', JSON.stringify(gData));
 				
+				console.log(gData);
+
 				drawGraph(gData);
 			}
 
