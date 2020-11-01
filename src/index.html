@@ -52,7 +52,7 @@
 			NODES MODAL 
 		-->
 		<div class="modal fade" id="graph_nodes_modal" tabindex="-1" role="dialog" aria-hidden="true">
-			<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
 				<div class="modal-content">
 					
 					<div class="modal-header">
@@ -94,7 +94,7 @@
 			LINKS MODAL 
 		-->
 		<div class="modal fade" id="graph_links_modal" tabindex="-1" role="dialog" aria-hidden="true">
-			<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
 				<div class="modal-content">
 					
 					<div class="modal-header">
@@ -106,10 +106,15 @@
 
 					<div class="modal-body">
 						<p id="links_block">
-							<p>Links:</p>
-							<button type="button" class="btn btn-default btn-sm" onclick="addLink()">
-								<span class="glyphicon glyphicon-plus"></span> Add
-							</button>
+							<p>
+								Links:
+								<button type="button" class="btn btn-outline-primary" onclick="addLink()">
+									<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-plus" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+										<path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"></path>
+									</svg>
+								</button>
+							</p>
+
 							<ul id="links_list">
 								<li id="default_link">
 									<select name="sources" id="default_sources">
@@ -118,7 +123,7 @@
 									</select> &#8594;
 									<select name="targets" id="default_targets">
 									</select> 
-								</li>
+								</li></br>
 							</ul>
 						</p>
 					</div>
@@ -136,11 +141,10 @@
 		<!-- 
 			END LINKS MODAL 
 		-->
+		
 
 		<script>
-			function debug() {
-				alert("Action!");
-			}
+			function debug() { alert("Action!"); }
 
 			function addNodeInput() {
 				var nodes_list = document.getElementById('nodes_list');
@@ -215,11 +219,13 @@
 				
 				/* Adicionar os 3 dropdowns a um list item e por sua vez, a uma unordered list. */
 				var li = document.createElement('li');
-				li.appendChild(select_source);
-				li.appendChild(select_relation);
+				li.appendChild(select_source); li.innerHTML += '&nbsp; &#8594; &nbsp;'
+				li.appendChild(select_relation); li.innerHTML += '&nbsp; &#8594; &nbsp;'
 				li.appendChild(select_target);
-					
-				document.getElementById('links_list').appendChild(li);
+				
+				const links_list = document.getElementById('links_list');
+				links_list.appendChild(li);
+				links_list.innerHTML += '</br>';
 			}
 
 			function buildGraph() {

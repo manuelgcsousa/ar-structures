@@ -16,7 +16,23 @@
 		<script src="./js/lib/three-spritetext.min.js"></script>
 		<script src="./js/lib/3d-force-graph-ar.min.js"></script>
 		
-		<script> /* localStorage.clear(); */ </script>
+		<script>
+			function allowTabbing() {
+				document.getElementById('node_data')
+					.addEventListener('keydown', function(e) {
+						if (e.key == 'Tab') {
+							e.preventDefault();
+							var start = this.selectionStart;
+							var end = this.selectionEnd;
+
+							// set textarea value to: text before caret + tab + text after caret
+							this.value = this.value.substring(0, start) + "\t" + this.value.substring(end);
+							// put caret at right position again
+							this.selectionStart = this.selectionEnd = start + 1;
+						}
+					});
+			}
+		</script>
 	</head>
 
 	<body onload="genGraph()">
@@ -32,15 +48,17 @@
 				-->
 
 				<div class="col-md-4" style="padding: 20px">
+					<!--
 					<div class="form-group">
 						<label for="graph-size">Graph's size</label>
 						<input type="number" class="form-control" id="graph-size" placeholder="Enter graph's size">
 					</div>
-					<!-- <button id="gen_btn" type="button" class="btn btn-primary" onclick="genGraph()">Generate Graph</button> -->
+					<button id="gen_btn" type="button" class="btn btn-primary" onclick="genGraph()">Generate Graph</button>
+					-->
 				</div>
 			</div>
 
-			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#graph_information_modal" onclick="iterate()">
+			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#graph_information_modal" onclick="getNodes()">
 				Graph Information
 			</button><br/>
 		
@@ -49,7 +67,7 @@
 				GRAPH INFORMATION MODAL 
 			-->
 			<div class="modal fade" id="graph_information_modal" tabindex="-1" role="dialog" aria-hidden="true">
-				<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
 					<div class="modal-content">
 						
 						<div class="modal-header">
@@ -61,16 +79,44 @@
 
 						<div class="modal-body">
 							<p id="nodes_block">
-								<p>Nodes:</p>
+								<!-- <p>&#10057; Nodes:</p> -->
 								<ul id="nodes_list"></ul>
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- 
+				END MODAL 
+			-->
+		
+
+			<!-- 
+				NODE INFORMATION MODAL 
+			-->
+			<div class="modal fade" id="node_information_modal" tabindex="-1" role="dialog" aria-hidden="true">
+				<div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+					<div class="modal-content">
+						
+						<div class="modal-header">
+							<h5 class="modal-title">Node Information</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+
+						<div class="modal-body">
+							<p id="nodes_block">
+								<p>Data:</p>
+								<textarea id="node_data" name="node_data_text" rows="10" cols="80"></textarea>
 							</p>
 						</div>
 
 						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-							<button type="button" class="btn btn-primary">Save changes</button>
+							<button type="button" class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" data-target="#graph_information_modal">Back</button>
+							<button type="button" class="btn btn-primary" onclick="console.log("Save Graph Data")">Save</button>
 						</div>
-					
+		
 					</div>
 				</div>
 			</div>
@@ -82,17 +128,21 @@
 		</div><br/>
 
 		<script src="./js/main.js"></script>
-		<script>
+		<script>	
 			function genGraph() {
+				// onload execute 'allowTabbing' \\
+					allowTabbing();
+				// ----------------------------- \\
+
 				var gData = createGraph();
 				localStorage.setItem('graph', JSON.stringify(gData));
 				
-				console.log(gData);
+				console.log(gData); // DEBUG
 
 				drawGraph(gData);
 			}
 
-			function iterate() {
+			function getNodes() {
 				const nodes_list = document.getElementById("nodes_list");
 
 				// Clean previous DOM's elements inside 'nodes_list'.
@@ -101,7 +151,14 @@
 				/* Create a new list of nodes. */
 				const gData = JSON.parse(localStorage.getItem('graph'));
 				gData['nodes'].forEach(elem => {
-					nodes_list.innerHTML += "<li>" + elem.id + "</li>";
+					if ( !(elem.id.startsWith('__Ghost')) )
+						nodes_list.innerHTML += ( 
+							'<li>' + 
+							'<button type="button" class="btn btn-primary" data-toggle="modal" data-dismiss="modal" data-target="#node_information_modal" onclick="alert("ola");">' + 
+							elem.id + 
+							'</button>' +
+							'</li></br>'
+						);
 				});
 			}
 		</script>
