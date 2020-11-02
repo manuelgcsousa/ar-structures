@@ -114,7 +114,7 @@
 
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" data-target="#graph_information_modal">Back</button>
-							<button type="button" class="btn btn-primary" onclick="console.log("Save Graph Data")">Save</button>
+							<button type="button" class="btn btn-primary" onclick="saveNodeData()">Save</button>
 						</div>
 		
 					</div>
@@ -130,10 +130,21 @@
 		<script src="./js/main.js"></script>
 		<script>	
 			function genGraph() {
+				/* INIT */ 
+				
 				// onload execute 'allowTabbing' \\
 					allowTabbing();
 				// ----------------------------- \\
 
+				// Criar estrutura de dados para guardar informação dos nodos.
+				var information = {};
+				
+				var nodes = JSON.parse(localStorage.getItem('nodes'));
+				nodes.forEach(node => { information[node] = {}; })
+				localStorage.setItem('information', JSON.stringify(information));
+		
+
+				/* Geração do Grafo. */
 				var gData = createGraph();
 				localStorage.setItem('graph', JSON.stringify(gData));
 				
@@ -154,12 +165,36 @@
 					if ( !(elem.id.startsWith('__Ghost')) )
 						nodes_list.innerHTML += ( 
 							'<li>' + 
-							'<button type="button" class="btn btn-primary" data-toggle="modal" data-dismiss="modal" data-target="#node_information_modal" onclick="alert("ola");">' + 
+							'<button type="button" class="btn btn-primary" data-toggle="modal" data-dismiss="modal" data-target="#node_information_modal" onclick="getNodeInformation(\'' + elem.id + '\')">' + 
 							elem.id + 
 							'</button>' +
 							'</li></br>'
 						);
 				});
+			}
+
+			function getNodeInformation(id_node) {
+				var information = JSON.parse(localStorage.getItem('information'));
+				var node_info = JSON.stringify(information[id_node], null, '\t');
+
+				document.getElementById('node_data').value = node_info;
+				
+				// Colocar o nodo no localStorage como temporário.
+				localStorage.setItem('temp_node', id_node);
+			}
+
+			function saveNodeData() {
+				try {
+					var information = JSON.parse(localStorage.getItem('information'));
+					const textarea_data = document.getElementById('node_data').value;
+				
+					information[localStorage.getItem('temp_node')] = JSON.parse(textarea_data);
+					localStorage.setItem('information', JSON.stringify(information, null, '\t'));
+				} catch (e) {
+					if (e instanceof SyntaxError) {
+						alert('The syntax if not correct: ' + e);
+					}
+				}
 			}
 		</script>
 	</body>
