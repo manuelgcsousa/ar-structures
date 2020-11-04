@@ -14,13 +14,72 @@ class Index
 		// Adicionar eventos de click aos novos list item.
 		closeButtons();
 	}
+	
+	/*
+	static arr_diff (a1, a2) {
+		    var a = [], diff = [];
+
+		    for (var i = 0; i < a1.length; i++) {
+				        a[a1[i]] = true;
+				    }
+
+		    for (var i = 0; i < a2.length; i++) {
+				        if (a[a2[i]]) {
+							            delete a[a2[i]];
+							        } else {
+										            a[a2[i]] = true;
+										        }
+				    }
+
+		    for (var k in a) {
+				        diff.push(k);
+				    }
+
+		    return diff;
+	}
+	*/
 
 	static populateLinksDropdown() {
+		/*
+		var nodes = [];
+		
+		var inputNodes = document.getElementById('nodes_list').querySelectorAll('input');
+		inputNodes.forEach((item, index) => {
+			nodes.push(item.value);
+		});
+
+		var oldNodes = JSON.parse(localStorage.getItem('nodes'));
+		if (oldNodes != null) {
+			var newNodes = Index.arr_diff(oldNodes, inputNodes);
+			if (newNodes.length > 0) {
+				var selects = document.getElementById('links_list').getElementsByTagName('select');
+				for (var i = 0; i < selects.length; i++) {
+					newNodes.forEach(newNode => {
+						var opt = document.createElement("option");
+						opt.value = newNode.toLowerCase();
+						opt.innerHTML = newNode;
+						selects[i].appendChild(opt);
+					});
+				}
+			}
+		}
+		*/
+
 		// ver quais os nodos que estão no localStorage
 		// sacar os nodos que estão em nodes_list
 		// comparar as duas listas
 			// se as listas forem iguais, não é necessário alterar nada
 			// caso contrário, verificar quais são os elementos que são novos, e adicionar a todos os selects.
+		/*
+			document.getElementById('links_list').getElementByTagName('select');
+
+			for (select in selects) {
+				var opt = document.createElement("option");
+				opt.value = "lazaro";
+				opt.innerHTML = "Lázaro";
+				selects[select].appendChild(opt);
+			}
+			*/
 
 		var nodes = [];
 		

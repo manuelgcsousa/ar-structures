@@ -61,8 +61,9 @@
 			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#graph_information_modal" onclick="getNodes()">
 				Graph Information
 			</button><br/>
-		
-			
+
+			<a id="downloadAnchorElem" class="btn btn-primary">Download Tree</a>
+
 			<!-- 
 				GRAPH INFORMATION MODAL 
 			-->
@@ -128,7 +129,8 @@
 		</div><br/>
 
 		<script src="./js/main.js"></script>
-		<script>	
+		<script>
+			
 			function genGraph() {
 				/* INIT */ 
 				
@@ -190,6 +192,21 @@
 				
 					information[localStorage.getItem('temp_node')] = JSON.parse(textarea_data);
 					localStorage.setItem('information', JSON.stringify(information, null, '\t'));
+
+					
+					/* Fazer update à informação para download. */
+					var graph = JSON.parse(localStorage.getItem('graph'));
+					var information = JSON.parse(localStorage.getItem('information'));
+
+					var Tree = {
+						"graph": graph,
+						"data": information
+					};
+
+					var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(Tree));
+					var download_btn = document.getElementById('downloadAnchorElem');
+					download_btn.setAttribute("href", dataStr);
+					download_btn.setAttribute("download", "scene.json");	
 				} catch (e) {
 					if (e instanceof SyntaxError) {
 						alert('The syntax if not correct: ' + e);

@@ -50,6 +50,8 @@ function createGraph() {
 				links.push(new_link);
 			}
 		}
+
+		if (link.relation === 'descending') { }
 	});
 
 	const gData = {
