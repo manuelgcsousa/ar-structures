@@ -40,7 +40,7 @@
 				transform: translate(0%, -50%);
 			}
 		</style>
-
+		<script src="js/index.js"></script>
 		<script>
 			function closeButtons() {
 				var closebtns = document.getElementsByClassName("close_custom");
@@ -76,9 +76,7 @@
 		</div>
 		
 
-		<!-- 
-			NODES MODAL 
-		-->
+		<!-- NODES MODAL -->
 		<div class="modal fade" id="graph_nodes_modal" tabindex="-1" role="dialog" aria-hidden="true">
 			<div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
 				<div class="modal-content">
@@ -94,7 +92,7 @@
 						<p id="nodes_block">
 							<p>
 								Nodes:
-								<button type="button" class="btn btn-outline-primary"onclick="addNodeInput()">
+								<button type="button" class="btn btn-outline-primary"onclick="Index.addNodeInput()">
 									<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-plus" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
 										<path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"></path>
 									</svg>
@@ -108,20 +106,16 @@
 					</div>
 
 					<div class="modal-footer">
-						<button type="button" class="btn btn-primary" data-toggle="modal" data-dismiss="modal" data-target="#graph_links_modal" onclick="populateLinksDropdown()">Next</button>
+						<button type="button" class="btn btn-primary" data-toggle="modal" data-dismiss="modal" data-target="#graph_links_modal" onclick="Index.populateLinksDropdown()">Next</button>
 					</div>
 				
 				</div>
 			</div>
 		</div>
-		<!-- 
-			END MODAL 
-		-->
+		<!-- END MODAL -->
 		
 
-		<!-- 
-			LINKS MODAL 
-		-->
+		<!-- LINKS MODAL -->
 		<div class="modal fade" id="graph_links_modal" tabindex="-1" role="dialog" aria-hidden="true">
 			<div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
 				<div class="modal-content">
@@ -137,7 +131,7 @@
 						<p id="links_block">
 							<p>
 								Links:
-								<button type="button" class="btn btn-outline-primary" onclick="addLink()">
+								<button type="button" class="btn btn-outline-primary" onclick="Index.addLink()">
 									<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-plus" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
 										<path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"></path>
 									</svg>
@@ -163,148 +157,28 @@
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" data-target="#graph_nodes_modal">Back</button>
 						<a href="/graph.html">
-							<button type="button" class="btn btn-primary" onclick="buildGraph()">Build</button>
+							<button type="button" class="btn btn-primary" onclick="Index.buildGraph()">Build</button>
 						</a>
 					</div>
 				
 				</div>
 			</div>
 		</div>
-		<!-- 
-			END LINKS MODAL 
-		-->
+		<!-- END LINKS MODAL -->
 		
 
 		<script>
 			function debug() { alert("Action!"); }
+			/*
+			document.getElementById('links_list').getElementByTagName('select');
 
-			function addNodeInput() {
-				var nodes_list = document.getElementById('nodes_list');
-				nodes_list.insertAdjacentHTML('beforeend',
-					'<p>' +
-					'<li>' +
-					'<input type="text"></input>' +
-					'<span class="close_custom">&times;</span>' +
-					'</li>' +
-					'</p>'
-				);
-				
-				// Adicionar eventos de click aos novos list item.
-				closeButtons();
+			for (select in selects) {
+				var opt = document.createElement("option");
+				opt.value = "lazaro";
+				opt.innerHTML = "Lázaro";
+				selects[select].appendChild(opt);
 			}
-
-			function populateLinksDropdown() {
-				var nodes = [];
-				
-				/* Obter todos os nodos previamente criados. */
-				var inputNodes = document.getElementById('nodes_list').querySelectorAll('input');
-				inputNodes.forEach((item, index) => {
-					nodes.push(item.value);
-				});
-				
-				// Guardar lista de nodos em localStorage.
-				localStorage.setItem('nodes', JSON.stringify(nodes));
-
-				var links_list = document.getElementById('links_list');
-				const linksItemsTotal = links_list.querySelectorAll('li').length;
-				links_list.innerHTML = ''; // limpar todos os dropdowns.
-				
-				/* Adicionar todos os links (dropdowns) com os novos nodos. */
-				for (var i = 0; i < linksItemsTotal; i++)
-					addLink();
-			}
-
-			function addLink() {
-				/* Criação dos dois dropdown para Source e Target. */
-				var select_source = document.createElement('select');
-				var select_target = document.createElement('select');
-
-				const nodes = JSON.parse(localStorage.getItem('nodes'));
-				nodes.forEach(node => {
-					var source = document.createElement('option');
-					source.value = node;
-					source.innerHTML = node;
-
-					var target = document.createElement('option');
-					target.value = node;
-					target.innerHTML = node;
-					
-					select_source.appendChild(source);
-					select_target.appendChild(target);
-				});
-				
-				/* Criação do dropdown para o tipo de Relação entre Source e Target. */
-				var select_relation = document.createElement('select');
-				
-				var asc = document.createElement('option');
-				asc.value = 'ascending';
-				asc.innerHTML = 'Ascending';
-				
-				var des = document.createElement('option');
-				des.value = 'descending';
-				des.innerHTML = 'Descending';
-			
-				var mar = document.createElement('option');
-				mar.value = 'marriage';
-				mar.innerHTML = 'Marriage';
-
-				select_relation.appendChild(asc);
-				select_relation.appendChild(des);
-				select_relation.appendChild(mar);
-				
-				/* Adicionar os 3 dropdowns a um list item e por sua vez, a uma unordered list. */
-				var p = document.createElement('p');
-				var li = document.createElement('li');
-				li.appendChild(select_source); li.insertAdjacentHTML("beforeend", '&nbsp; &#8594; &nbsp;');
-				li.appendChild(select_relation); li.insertAdjacentHTML("beforeend", '&nbsp; &#8594; &nbsp;');
-				li.appendChild(select_target); li.insertAdjacentHTML('beforeend', '<span class="close_custom">&times;</span>');
-				p.appendChild(li);
-				
-				const links_list = document.getElementById('links_list');
-				links_list.appendChild(p);
-				
-				// Adicionar eventos de click aos novos list item.
-				closeButtons();
-			}
-/*
-document.getElementById('links_list').getElementByTagName('select');
-
-for (select in selects) {
-    var opt = document.createElement("option");
-    opt.value = "lazaro";
-    opt.innerHTML = "Lázaro";
-    selects[select].appendChild(opt);
-}
-*/
-
-
-
-			function buildGraph() {
-				var links = [];
-				
-				var li = document.getElementById('links_list').querySelectorAll('li');
-				li.forEach((item, index) => {
-					var link = {};
-
-					var select = item.querySelectorAll('select');
-					for (var i = 0; i < select.length; i++) {
-						if (i == 0)
-							link['source'] = select[i].value;
-						
-						if (i == 1)
-							link['relation'] = select[i].value;	
-
-						if (i == 2)
-							link['target'] = select[i].value;
-					}
-					
-					links.push(link);
-				});
-					
-				localStorage.setItem('links', JSON.stringify(links));
-			}
+			*/
 		</script>
-		
-		
 	</body>
 </html>
