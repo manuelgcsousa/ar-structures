@@ -47,7 +47,7 @@
 
 				for (var i = 0; i < closebtns.length; i++) {
 					closebtns[i].addEventListener("click", function() {
-						this.parentElement.style.display = 'none';
+						this.parentElement.remove();
 					});
 				}
 			}
@@ -102,7 +102,7 @@
 							</p>
 																					
 							<ul id="nodes_list">
-								<li><input type="text"></input><span class="close_custom">&times;</span></li></br>
+								<p><li><input type="text"></input><span class="close_custom">&times;</span></li></p>
 							</ul>
 						</p>
 					</div>
@@ -145,14 +145,17 @@
 							</p>
 
 							<ul id="links_list">
-								<li id="default_link">
-									<select name="sources" id="default_sources">
-									</select> &#8594;
-									<select name="relations" id="default_relations">
-									</select> &#8594;
-									<select name="targets" id="default_targets">
-									</select> 
-								</li></br>
+								<p>
+									<li id="default_link">
+										<select name="sources" id="default_sources">
+										</select> &#8594;
+										<select name="relations" id="default_relations">
+										</select> &#8594;
+										<select name="targets" id="default_targets">
+										</select> 
+										<span class="close_custom">&times;</span>
+									</li>
+								</p>
 							</ul>
 						</p>
 					</div>
@@ -177,23 +180,17 @@
 
 			function addNodeInput() {
 				var nodes_list = document.getElementById('nodes_list');
-				nodes_list.insertAdjacentHTML("beforeend",
+				nodes_list.insertAdjacentHTML('beforeend',
+					'<p>' +
 					'<li>' +
 					'<input type="text"></input>' +
-					'<span class="close_custom">&times;</close>' +
-					'</li></br>'
+					'<span class="close_custom">&times;</span>' +
+					'</li>' +
+					'</p>'
 				);
 				
-				/*
-				var new_node_input = document.createElement('input');
-				new_node_input.type = 'text';
-				var new_span = document.createElement('span');
-				new_span.class = 'close_custom';
-				new_span.innerHTML = '&times;';
-
-				new_list_item.appendChild(new_node_input);
-				new_list_item.appendChild(new_span);
-				*/
+				// Adicionar eventos de click aos novos list item.
+				closeButtons();
 			}
 
 			function populateLinksDropdown() {
@@ -256,15 +253,31 @@
 				select_relation.appendChild(mar);
 				
 				/* Adicionar os 3 dropdowns a um list item e por sua vez, a uma unordered list. */
+				var p = document.createElement('p');
 				var li = document.createElement('li');
 				li.appendChild(select_source); li.insertAdjacentHTML("beforeend", '&nbsp; &#8594; &nbsp;');
 				li.appendChild(select_relation); li.insertAdjacentHTML("beforeend", '&nbsp; &#8594; &nbsp;');
-				li.appendChild(select_target);
+				li.appendChild(select_target); li.insertAdjacentHTML('beforeend', '<span class="close_custom">&times;</span>');
+				p.appendChild(li);
 				
 				const links_list = document.getElementById('links_list');
-				links_list.appendChild(li);
-				links_list.insertAdjacentHTML("beforeend", '</br>');
+				links_list.appendChild(p);
+				
+				// Adicionar eventos de click aos novos list item.
+				closeButtons();
 			}
+/*
+document.getElementById('links_list').getElementByTagName('select');
+
+for (select in selects) {
+    var opt = document.createElement("option");
+    opt.value = "lazaro";
+    opt.innerHTML = "Lázaro";
+    selects[select].appendChild(opt);
+}
+*/
+
+
 
 			function buildGraph() {
 				var links = [];
