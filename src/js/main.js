@@ -51,7 +51,7 @@ function createGraph() {
 			}
 		}
 
-		if (link.relation === 'descending') { }
+		if (link.relation === 'descending') { links.push(link); }
 	});
 
 	const gData = {
