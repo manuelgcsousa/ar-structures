@@ -177,5 +177,33 @@ class Index
 		});
 			
 		localStorage.setItem('links', JSON.stringify(links));
+
+		// Colocar flag no localStorage para indicar que grafo tem que ser desenhado.
+		localStorage.setItem('toDraw', JSON.stringify(true));
+	}
+
+	static readUploadedFile() {
+		const fileSelector = document.getElementById('file-selector');
+		fileSelector.addEventListener('change', (event) => {
+			const fileList = event.target.files[0];
+			
+			const reader = new FileReader();
+			reader.addEventListener('load', (event) => {
+				try {
+					var tree = JSON.parse(event.target.result);
+					
+					// Colocar flag no localStorage para indicar que grafo já está construído.
+					localStorage.setItem('toCreate', JSON.stringify(false));
+					// Colocar grafo em 'tree' no localStorage.
+					localStorage.setItem('graph', JSON.stringify(tree));
+					
+					location.href = "/graph.html";
+				} catch (e) {
+					alert('File is not valid.');
+				}
+			});
+
+			reader.readAsText(fileList);
+		});
 	}
 }

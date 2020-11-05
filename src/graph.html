@@ -132,27 +132,31 @@
 		<script>
 			
 			function genGraph() {
-				/* INIT */ 
-				
 				// onload execute 'allowTabbing' \\
 					allowTabbing();
 				// ----------------------------- \\
 
-				// Criar estrutura de dados para guardar informação dos nodos.
-				var information = {};
-				
-				var nodes = JSON.parse(localStorage.getItem('nodes'));
-				nodes.forEach(node => { information[node] = {}; })
-				localStorage.setItem('information', JSON.stringify(information));
-		
+				const toCreate = JSON.parse(localStorage.getItem('toCreate'));
+				if (!toCreate) {
+					const gData = JSON.parse(localStorage.getItem('graph'));
+					drawGraph(gData);
+				} else {
+					// Criar estrutura de dados para guardar informação dos nodos.
+					var information = {};
+					
+					var nodes = JSON.parse(localStorage.getItem('nodes'));
+					nodes.forEach(node => { information[node] = {}; })
+					localStorage.setItem('information', JSON.stringify(information));
+			
 
-				/* Geração do Grafo. */
-				var gData = createGraph();
-				localStorage.setItem('graph', JSON.stringify(gData));
-				
-				console.log(gData); // DEBUG
+					/* Geração do Grafo. */
+					var gData = createGraph();
+					localStorage.setItem('graph', JSON.stringify(gData));
+					
+					console.log(gData); // DEBUG
 
-				drawGraph(gData);
+					drawGraph(gData);
+				}
 			}
 
 			function getNodes() {
