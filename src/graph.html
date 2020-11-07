@@ -32,6 +32,21 @@
 						}
 					});
 			}
+
+			function downloadTree() {
+				var graph = JSON.parse(localStorage.getItem('graph'));
+				var information = JSON.parse(localStorage.getItem('information'));
+
+				var Tree = {
+					"graph": graph,
+					"data": information
+				};
+
+				var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(Tree));
+				var download_btn = document.getElementById('downloadAnchorElem');
+				download_btn.setAttribute("href", dataStr);
+				download_btn.setAttribute("download", "scene.json");
+			}
 		</script>
 	</head>
 
@@ -136,6 +151,7 @@
 					allowTabbing();
 				// ----------------------------- \\
 
+
 				const toCreate = JSON.parse(localStorage.getItem('toCreate'));
 				if (!toCreate) {
 					const gData = JSON.parse(localStorage.getItem('graph'));
@@ -157,6 +173,11 @@
 
 					drawGraph(gData);
 				}
+
+				
+				// onload execute 'downloadTree' \\
+					downloadTree();
+				// ----------------------------- \\
 			}
 
 			function getNodes() {
@@ -199,6 +220,8 @@
 
 					
 					/* Fazer update à informação para download. */
+					downloadTree();	
+					/*
 					var graph = JSON.parse(localStorage.getItem('graph'));
 					var information = JSON.parse(localStorage.getItem('information'));
 
@@ -210,7 +233,8 @@
 					var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(Tree));
 					var download_btn = document.getElementById('downloadAnchorElem');
 					download_btn.setAttribute("href", dataStr);
-					download_btn.setAttribute("download", "scene.json");	
+					download_btn.setAttribute("download", "scene.json");
+					*/
 				} catch (e) {
 					if (e instanceof SyntaxError) {
 						alert('The syntax if not correct: ' + e);
