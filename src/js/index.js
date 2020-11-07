@@ -192,10 +192,15 @@ class Index
 				try {
 					var tree = JSON.parse(event.target.result);
 					
+					var graph = tree['graph'];
+					var data = tree['data'];
+
 					// Colocar flag no localStorage para indicar que grafo já está construído.
 					localStorage.setItem('toCreate', JSON.stringify(false));
-					// Colocar grafo em 'tree' no localStorage.
-					localStorage.setItem('graph', JSON.stringify(tree));
+					
+					// Colocar toda a árvore no localStorage.
+					localStorage.setItem('graph', JSON.stringify(graph));
+					localStorage.setItem('information', JSON.stringify(data));
 					
 					location.href = "/graph.html";
 				} catch (e) {

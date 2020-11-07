@@ -164,13 +164,10 @@
 					nodes.forEach(node => { information[node] = {}; })
 					localStorage.setItem('information', JSON.stringify(information));
 			
-
 					/* Geração do Grafo. */
 					var gData = createGraph();
 					localStorage.setItem('graph', JSON.stringify(gData));
 					
-					console.log(gData); // DEBUG
-
 					drawGraph(gData);
 				}
 
@@ -188,6 +185,7 @@
 
 				/* Create a new list of nodes. */
 				const gData = JSON.parse(localStorage.getItem('graph'));
+				console.log(gData);
 				gData['nodes'].forEach(elem => {
 					if ( !(elem.id.startsWith('__Ghost')) )
 						nodes_list.innerHTML += ( 
@@ -221,20 +219,6 @@
 					
 					/* Fazer update à informação para download. */
 					downloadTree();	
-					/*
-					var graph = JSON.parse(localStorage.getItem('graph'));
-					var information = JSON.parse(localStorage.getItem('information'));
-
-					var Tree = {
-						"graph": graph,
-						"data": information
-					};
-
-					var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(Tree));
-					var download_btn = document.getElementById('downloadAnchorElem');
-					download_btn.setAttribute("href", dataStr);
-					download_btn.setAttribute("download", "scene.json");
-					*/
 				} catch (e) {
 					if (e instanceof SyntaxError) {
 						alert('The syntax if not correct: ' + e);
