@@ -16,6 +16,7 @@
 		<script src="./js/lib/three-spritetext.min.js"></script>
 		<script src="./js/lib/3d-force-graph-ar.min.js"></script>
 		
+		<script src="js/graph.js"></script>	
 		<script>
 			function allowTabbing() {
 				document.getElementById('node_data')
@@ -50,38 +51,22 @@
 		</script>
 	</head>
 
-	<body onload="genGraph()">
+	<body onload="Graph.genGraph()">
 		<div id="3d-graph"></div>
 
 		<div class="container-fluid">
 			<div class="row">
-				<!--
-				<div class="col-md-8 border-right border-bottom" style="padding: 20px">
-					<div id="3d-graph">
-					</div>
-				</div>
-				-->
-
-				<div class="col-md-4" style="padding: 20px">
-					<!--
-					<div class="form-group">
-						<label for="graph-size">Graph's size</label>
-						<input type="number" class="form-control" id="graph-size" placeholder="Enter graph's size">
-					</div>
-					<button id="gen_btn" type="button" class="btn btn-primary" onclick="genGraph()">Generate Graph</button>
-					-->
-				</div>
+				<div class="col-md-4" style="padding: 20px"></div>
 			</div>
 
-			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#graph_information_modal" onclick="getNodes()">
+			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#graph_information_modal" onclick="Graph.getNodes()">
 				Graph Information
 			</button><br/>
 
 			<a id="downloadAnchorElem" class="btn btn-primary">Download Tree</a>
 
-			<!-- 
-				GRAPH INFORMATION MODAL 
-			-->
+
+			<!-- GRAPH INFORMATION MODAL -->
 			<div class="modal fade" id="graph_information_modal" tabindex="-1" role="dialog" aria-hidden="true">
 				<div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
 					<div class="modal-content">
@@ -102,14 +87,10 @@
 					</div>
 				</div>
 			</div>
-			<!-- 
-				END MODAL 
-			-->
+			<!-- END MODAL -->
 		
 
-			<!-- 
-				NODE INFORMATION MODAL 
-			-->
+			<!-- NODE INFORMATION MODAL -->
 			<div class="modal fade" id="node_information_modal" tabindex="-1" role="dialog" aria-hidden="true">
 				<div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
 					<div class="modal-content">
@@ -130,101 +111,17 @@
 
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" data-target="#graph_information_modal">Back</button>
-							<button type="button" class="btn btn-primary" onclick="saveNodeData()">Save</button>
+							<button type="button" class="btn btn-primary" onclick="Graph.saveNodeData()">Save</button>
 						</div>
 		
 					</div>
 				</div>
 			</div>
-			<!-- 
-				END MODAL 
-			-->
+			<!-- END MODAL -->
 
 
 		</div><br/>
 
 		<script src="./js/main.js"></script>
-		<script>
-			
-			function genGraph() {
-				// onload execute 'allowTabbing' \\
-					allowTabbing();
-				// ----------------------------- \\
-
-
-				const toCreate = JSON.parse(localStorage.getItem('toCreate'));
-				if (!toCreate) {
-					const gData = JSON.parse(localStorage.getItem('graph'));
-					drawGraph(gData);
-				} else {
-					// Criar estrutura de dados para guardar informação dos nodos.
-					var information = {};
-					
-					var nodes = JSON.parse(localStorage.getItem('nodes'));
-					nodes.forEach(node => { information[node] = {}; })
-					localStorage.setItem('information', JSON.stringify(information));
-			
-					/* Geração do Grafo. */
-					var gData = createGraph();
-					localStorage.setItem('graph', JSON.stringify(gData));
-					
-					drawGraph(gData);
-				}
-
-				
-				// onload execute 'downloadTree' \\
-					downloadTree();
-				// ----------------------------- \\
-			}
-
-			function getNodes() {
-				const nodes_list = document.getElementById("nodes_list");
-
-				// Clean previous DOM's elements inside 'nodes_list'.
-				nodes_list.innerHTML = "";
-
-				/* Create a new list of nodes. */
-				const gData = JSON.parse(localStorage.getItem('graph'));
-				console.log(gData);
-				gData['nodes'].forEach(elem => {
-					if ( !(elem.id.startsWith('__Ghost')) )
-						nodes_list.innerHTML += ( 
-							'<li>' + 
-							'<button type="button" class="btn btn-primary" data-toggle="modal" data-dismiss="modal" data-target="#node_information_modal" onclick="getNodeInformation(\'' + elem.id + '\')">' + 
-							elem.id + 
-							'</button>' +
-							'</li></br>'
-						);
-				});
-			}
-
-			function getNodeInformation(id_node) {
-				var information = JSON.parse(localStorage.getItem('information'));
-				var node_info = JSON.stringify(information[id_node], null, '\t');
-
-				document.getElementById('node_data').value = node_info;
-				
-				// Colocar o nodo no localStorage como temporário.
-				localStorage.setItem('temp_node', id_node);
-			}
-
-			function saveNodeData() {
-				try {
-					var information = JSON.parse(localStorage.getItem('information'));
-					const textarea_data = document.getElementById('node_data').value;
-				
-					information[localStorage.getItem('temp_node')] = JSON.parse(textarea_data);
-					localStorage.setItem('information', JSON.stringify(information, null, '\t'));
-
-					
-					/* Fazer update à informação para download. */
-					downloadTree();	
-				} catch (e) {
-					if (e instanceof SyntaxError) {
-						alert('The syntax if not correct: ' + e);
-					}
-				}
-			}
-		</script>
 	</body>
 </html>

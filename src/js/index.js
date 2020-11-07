@@ -15,72 +15,8 @@ class Index
 		closeButtons();
 	}
 	
-	/*
-	static arr_diff (a1, a2) {
-		    var a = [], diff = [];
-
-		    for (var i = 0; i < a1.length; i++) {
-				        a[a1[i]] = true;
-				    }
-
-		    for (var i = 0; i < a2.length; i++) {
-				        if (a[a2[i]]) {
-							            delete a[a2[i]];
-							        } else {
-										            a[a2[i]] = true;
-										        }
-				    }
-
-		    for (var k in a) {
-				        diff.push(k);
-				    }
-
-		    return diff;
-	}
-	*/
-
+	
 	static populateLinksDropdown() {
-		/*
-		var nodes = [];
-		
-		var inputNodes = document.getElementById('nodes_list').querySelectorAll('input');
-		inputNodes.forEach((item, index) => {
-			nodes.push(item.value);
-		});
-
-		var oldNodes = JSON.parse(localStorage.getItem('nodes'));
-		if (oldNodes != null) {
-			var newNodes = Index.arr_diff(oldNodes, inputNodes);
-			if (newNodes.length > 0) {
-				var selects = document.getElementById('links_list').getElementsByTagName('select');
-				for (var i = 0; i < selects.length; i++) {
-					newNodes.forEach(newNode => {
-						var opt = document.createElement("option");
-						opt.value = newNode.toLowerCase();
-						opt.innerHTML = newNode;
-						selects[i].appendChild(opt);
-					});
-				}
-			}
-		}
-		*/
-
-		// ver quais os nodos que estão no localStorage
-		// sacar os nodos que estão em nodes_list
-		// comparar as duas listas
-			// se as listas forem iguais, não é necessário alterar nada
-			// caso contrário, verificar quais são os elementos que são novos, e adicionar a todos os selects.
-		/*
-			document.getElementById('links_list').getElementByTagName('select');
-
-			for (select in selects) {
-				var opt = document.createElement("option");
-				opt.value = "lazaro";
-				opt.innerHTML = "Lázaro";
-				selects[select].appendChild(opt);
-			}
-			*/
-
 		var nodes = [];
 		
 		/* Obter todos os nodos previamente criados. */
@@ -99,6 +35,57 @@ class Index
 		/* Adicionar todos os links (dropdowns) com os novos nodos. */
 		for (var i = 0; i < linksItemsTotal; i++)
 			Index.addLink();
+		
+		
+		/*
+		// ver quais os nodos que estão no localStorage
+		// sacar os nodos que estão em nodes_list
+		// comparar as duas listas
+			// se as listas forem iguais, não é necessário alterar nada
+			// caso contrário, verificar quais são os elementos que são novos, e adicionar a todos os selects.
+
+		var nodes = [];
+		
+		var inputNodes = document.getElementById('nodes_list').querySelectorAll('input');
+		inputNodes.forEach((item, index) => nodes.push(item.value));
+
+		var oldNodes = JSON.parse(localStorage.getItem('nodes'));
+		if (oldNodes != null) {
+			// Obter a diferença entre os dois arrays.
+			var diff = arr_diff(oldNodes, inputNodes);
+			
+			for (var i = 0; i < diff.length; i++) {
+				var selects = document.getElementById('links_list').getElementsByTagName('select');
+				
+				for (var j = 0; j < selects.length; j++) {
+					if (oldNodes.length > newNodes) {
+						for (var k = 0; k < selects[j].childNodes.length; k++) {
+							if (selects[j][k].innerHTML === diff[i]) {
+								selects[j].removeChild(selects[j][k]);
+							}
+						} 
+					} else {
+						var opt = document.createElement('option');
+						opt.value = diff[i];
+						opt.innerHTML = diff[i];
+						selects[j].appendChild(opt);
+					}
+				}
+			}
+			
+			if (newNodes.length > 0) {
+				var selects = document.getElementById('links_list').getElementsByTagName('select');
+				for (var i = 0; i < selects.length; i++) {
+					newNodes.forEach(newNode => {
+						var opt = document.createElement("option");
+						opt.value = newNode.toLowerCase();
+						opt.innerHTML = newNode;
+						selects[i].appendChild(opt);
+					});
+				}
+			}
+		}
+		*/
 	}
 
 	static addLink() {
@@ -211,4 +198,23 @@ class Index
 			reader.readAsText(fileList);
 		});
 	}
+}
+
+
+
+
+/* UTILS */
+function arr_diff(a1, a2) {
+	var a = [], diff = [];
+
+	for (var i = 0; i < a1.length; i++) a[a1[i]] = true;
+
+	for (var i = 0; i < a2.length; i++) {
+		if (a[a2[i]]) delete a[a2[i]];
+		else a[a2[i]] = true;
+	}
+	
+	for (var k in a) diff.push(k);
+
+	return diff;
 }
