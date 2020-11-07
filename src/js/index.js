@@ -179,7 +179,7 @@ class Index
 		localStorage.setItem('links', JSON.stringify(links));
 
 		// Colocar flag no localStorage para indicar que grafo tem que ser desenhado.
-		localStorage.setItem('toDraw', JSON.stringify(true));
+		localStorage.setItem('toCreate', JSON.stringify(true));
 	}
 
 	static readUploadedFile() {
