@@ -109,6 +109,8 @@ function drawGraph(gData) {
 			})
 			.glScale(50) // Quanto maior a escala, menor o graph.
 			.graphData(gData);
+
+	return Graph;
 }
 
 

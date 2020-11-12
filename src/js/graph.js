@@ -5,6 +5,7 @@ class Graph
 			allowTabbing();
 		// ----------------------------- \\
 
+		var Graph;
 
 		const toCreate = JSON.parse(localStorage.getItem('toCreate'));
 		if (!toCreate) {
@@ -22,13 +23,15 @@ class Graph
 			var gData = createGraph();
 			localStorage.setItem('graph', JSON.stringify(gData));
 			
-			drawGraph(gData);
+			Graph = drawGraph(gData);
 		}
 
 		
 		// onload execute 'downloadTree' \\
 			downloadTree();
 		// ----------------------------- \\
+
+		return Graph;
 	}
 	
 	static getNodes() {

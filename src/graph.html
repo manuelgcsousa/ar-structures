@@ -18,6 +18,9 @@
 		
 		<script src="js/graph.js"></script>	
 		<script>
+			/* GraphAR global para fazer alterações dinâmicas. */
+			var GraphAR;
+
 			function allowTabbing() {
 				document.getElementById('node_data')
 					.addEventListener('keydown', function(e) {
@@ -48,10 +51,23 @@
 				download_btn.setAttribute("href", dataStr);
 				download_btn.setAttribute("download", "scene.json");
 			}
+			
+			/* Aumentar e diminuir a escala do GraphAR através de keypresses. */
+			document.addEventListener('keydown', function(e) {
+				const oldScale = GraphAR.glScale();
+				if (e.key === '+') {
+					GraphAR.glScale(oldScale + 10);
+				}
+				else if (e.key === '-') {
+					GraphAR.glScale(oldScale - 10);
+				}
+				
+				setTimeout(() => {}, 1000);
+			});
 		</script>
 	</head>
 
-	<body onload="Graph.genGraph()">
+	<body onload="genGraph()">
 		<div id="3d-graph"></div>
 
 		<div class="container-fluid">
@@ -123,5 +139,8 @@
 		</div><br/>
 
 		<script src="./js/main.js"></script>
+		<script>
+			function genGraph() { GraphAR = Graph.genGraph(); }
+		</script>
 	</body>
 </html>
