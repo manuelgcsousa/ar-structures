@@ -56,10 +56,11 @@
 			document.addEventListener('keydown', function(e) {
 				const oldScale = GraphAR.glScale();
 				if (e.key === '+') {
-					if (oldScale - 10 > 0)
-						GraphAR.glScale(oldScale - 10);
+					if (oldScale - 5 > 0)
+						GraphAR.glScale(oldScale - 5);
 				} else if (e.key === '-') {
-					GraphAR.glScale(oldScale + 10);
+					if (oldScale - 5 < 200)
+						GraphAR.glScale(oldScale + 5);
 				}
 				
 				setTimeout(() => {}, 1000);
@@ -77,6 +78,10 @@
 
 			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#graph_information_modal" onclick="Graph.getNodes()">
 				Graph Information
+			</button><br/>
+
+			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add_node_modal" onclick="populateTargetNodes()">
+				Add New Node	
 			</button><br/>
 
 			<a id="downloadAnchorElem" class="btn btn-primary">Download Tree</a>
@@ -136,11 +141,67 @@
 			<!-- END MODAL -->
 
 
+			<!-- ADD NODE MODAL -->
+			<div class="modal fade" id="add_node_modal" tabindex="-1" role="dialog" aria-hidden="true">
+				<div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+					<div class="modal-content">
+						
+						<div class="modal-header">
+							<h5 class="modal-title">Add New Node</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+
+						<div class="modal-body">
+							<input id="new_node" type="text"></input>
+							
+							<select id="target_links">
+								<option value="ascending">Ascending</option>
+								<option value="descending">Descending</option>
+								<option value="marriage">Marriage</option>
+							</select>
+
+							<select id="target_nodes"></select>
+
+							<button type="button" class="btn btn-primary" onclick="addNewNode()">Add</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- END MODAL -->
+
+
 		</div><br/>
 
 		<script src="./js/main.js"></script>
 		<script>
 			function genGraph() { GraphAR = Graph.genGraph(); }
+
+			function populateTargetNodes() {
+				const targetNodes = document.getElementById('target_nodes');
+				
+				const nodes = JSON.parse(localStorage.getItem('nodes'));
+				nodes.forEach(node => {
+					var option = document.createElement('option');
+					option.value = node;
+					option.innerHTML = node;
+
+					targetNodes.appendChild(option);
+				});
+			}
+
+			function addNewNode() {
+				const newNode = document.getElementById('new_node').value;
+				const newLink = document.getElementById('target_links').value;
+				const newTarget = document.getElementById('target_nodes').value;
+
+				var node = { id: newNode };
+				var link = { source: newNode, relation: newLink, target: newTarget };
+
+				console.log(node);
+				console.log(link);
+			}
 		</script>
 	</body>
 </html>
