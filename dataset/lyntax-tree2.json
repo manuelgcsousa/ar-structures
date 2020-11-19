@@ -1,0 +1,137 @@
+{
+  "graph": {
+    "nodes": [
+      {
+        "id": "main"
+      },
+      {
+        "id": "Sujeito"
+      },
+      {
+        "id": "Determinante_S"
+      },
+      {
+        "id": "Nome_S"
+      },
+      {
+        "id": "Predicado"
+      },
+      {
+        "id": "Verbo"
+      },
+      {
+        "id": "ComplementoDireto"
+      },
+      {
+        "id": "Determinante_CD"
+      },
+      {
+        "id": "Nome_CD"
+      },
+      {
+        "id": "'O'"
+      },
+      {
+        "id": "'Carlos'"
+      },
+      {
+        "id": "'teme'"
+      },
+      {
+        "id": "'a'"
+      },
+      {
+        "id": "'sinceridade'"
+      }
+    ],
+    "links": [
+      {
+        "source": "main",
+        "relation": "ascending",
+        "target": "Sujeito"
+      },
+      {
+        "source": "main",
+        "relation": "ascending",
+        "target": "Predicado"
+      },
+      {
+        "source": "Sujeito",
+        "relation": "ascending",
+        "target": "Determinante_S"
+      },
+      {
+        "source": "Sujeito",
+        "relation": "ascending",
+        "target": "Nome_S"
+      },
+      {
+        "source": "Determinante_S",
+        "relation": "ascending",
+        "target": "'O'"
+      },
+      {
+        "source": "Nome_S",
+        "relation": "ascending",
+        "target": "'Carlos'"
+      },
+      {
+        "source": "Predicado",
+        "relation": "ascending",
+        "target": "Verbo"
+      },
+      {
+        "source": "Predicado",
+        "relation": "ascending",
+        "target": "ComplementoDireto"
+      },
+      {
+        "source": "Verbo",
+        "relation": "ascending",
+        "target": "'teme'"
+      },
+      {
+        "source": "ComplementoDireto",
+        "relation": "ascending",
+        "target": "Determinante_CD"
+      },
+      {
+        "source": "ComplementoDireto",
+        "relation": "ascending",
+        "target": "Nome_CD"
+      },
+      {
+        "source": "Determinante_CD",
+        "relation": "ascending",
+        "target": "'a'"
+      },
+      {
+        "source": "Nome_CD",
+		"relation": "ascending",
+        "target": "'sinceridade'"
+      }
+    ]
+  },
+  "data": {
+    "main": {},
+    "Sujeito": {
+	  "attribute": "tipo",
+	  "value": "animado"
+	},
+    "Determinante_S": {},
+    "Nome_S": {},
+    "Predicado": {},
+    "Verbo": {
+	  "attribute": "tipo",
+	  "value": "animado"
+	},
+    "ComplementoDireto": {},
+    "Determinante_CD": {},
+    "Nome_CD": {},
+    "'O'": {},
+    "'Carlos'": {},
+    "'teme'": {},
+    "'a'": {},
+    "'sinceridade'": {}
+  }
+}
