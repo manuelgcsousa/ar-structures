@@ -198,6 +198,26 @@
 
 				var node = { id: newNode };
 				var link = { source: newNode, relation: newLink, target: newTarget };
+				
+				var graph = JSON.parse(localStorage.getItem('graph'));
+
+				if (newLink == 'marriage') {
+					const ghost_node = { 'id': ('__Ghost_' + newNode + '_' + newTarget + '__') };
+					graph['nodes'].push(ghost_node);
+
+					// Adicionar o nodo 'ghost' aos respetivos Source e Target.
+					graph['nodes'].map(node => {
+						if (node.id === newNode || node.id === newTarget)
+							if ( !('ghost' in node) )
+								node['ghost'] = ghost_node.id;
+					});
+
+					const source2ghost = { 'source': newNode, 'target': ghost_node.id };
+					const target2ghost = { 'source': newTarget, 'target': ghost_node.id };
+					graph['links'].push(source2ghost);
+					graph['links'].push(target2ghost);
+					graph['links'].push(link);
+				}
 
 				console.log(node);
 				console.log(link);
