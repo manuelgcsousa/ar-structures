@@ -219,6 +219,21 @@
 					graph['links'].push(link);
 				}
 
+				if (newLink == 'descending') {
+					graph['nodes'].map(node => {
+						if (node.id == newTarget) {
+							if ('ghost' in node) {
+								const ghost2new = { 'source': node['ghost'], 'target': newNode };
+								graph['links'].push(ghost2new);
+							}
+						}
+					});
+				}
+				
+				if (newLink == 'ascending') {
+					graph['links'].push(link);
+				}
+
 				console.log(node);
 				console.log(link);
 			}
