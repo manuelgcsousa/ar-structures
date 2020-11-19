@@ -233,9 +233,12 @@
 				if (newLink == 'ascending') {
 					graph['links'].push(link);
 				}
+				
+				// Update localStorage 'graph'.
+				localStorage.setItem('graph', JSON.stringify(graph));
 
-				console.log(node);
-				console.log(link);
+				// Atualizar o graph.
+				// ...
 			}
 		</script>
 	</body>
