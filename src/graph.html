@@ -180,7 +180,8 @@
 
 			function populateTargetNodes() {
 				const targetNodes = document.getElementById('target_nodes');
-				
+				target_nodes.innerHTML = ''; // limpar select
+
 				const nodes = JSON.parse(localStorage.getItem('nodes'));
 				nodes.forEach(node => {
 					var option = document.createElement('option');
@@ -199,8 +200,10 @@
 				var node = { id: newNode };
 				var link = { source: newNode, relation: newLink, target: newTarget };
 				
+				var nodes = JSON.parse(localStorage.getItem('nodes'));
 				var graph = JSON.parse(localStorage.getItem('graph'));
-
+				var information = JSON.parse(localStorage.getItem('information'));
+				
 				if (newLink == 'marriage') {
 					const ghost_node = { 'id': ('__Ghost_' + newNode + '_' + newTarget + '__') };
 					graph['nodes'].push(ghost_node);
@@ -233,12 +236,19 @@
 				if (newLink == 'ascending') {
 					graph['links'].push(link);
 				}
-				
-				// Update localStorage 'graph'.
+
+				// Finally, adicionar novo nodo à lista de nodos & grafo & information.
+				nodes.push(newNode);
+				graph['nodes'].push(node);
+				information[newNode] = {};
+
+				// Update localStorage 'nodes' & 'graph' & 'information'.
+				localStorage.setItem('nodes', JSON.stringify(nodes));
 				localStorage.setItem('graph', JSON.stringify(graph));
+				localStorage.setItem('information', JSON.stringify(information));
 
 				// Atualizar o graph.
-				// ...
+				drawGraph(graph);
 			}
 		</script>
 	</body>
