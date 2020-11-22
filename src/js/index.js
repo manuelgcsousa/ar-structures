@@ -181,12 +181,19 @@ class Index
 					
 					var graph = tree['graph'];
 					var data = tree['data'];
+					var nodes = [];
 
+					tree['graph']['nodes'].forEach(node => {
+						if ( !(node.id.startsWith('__Ghost')) )
+							nodes.push(node.id);
+					});
+					
 					// Colocar flag no localStorage para indicar que grafo já está construído.
 					localStorage.setItem('toCreate', JSON.stringify(false));
 					
 					// Colocar toda a árvore no localStorage.
 					localStorage.setItem('graph', JSON.stringify(graph));
+					localStorage.setItem('nodes', JSON.stringify(nodes));
 					localStorage.setItem('information', JSON.stringify(data));
 					
 					location.href = "/graph.html";

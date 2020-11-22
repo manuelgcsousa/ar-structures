@@ -10,7 +10,7 @@ class Graph
 		const toCreate = JSON.parse(localStorage.getItem('toCreate'));
 		if (!toCreate) {
 			const gData = JSON.parse(localStorage.getItem('graph'));
-			drawGraph(gData);
+			Graph = drawGraph(gData);
 		} else {
 			// Criar estrutura de dados para guardar informação dos nodos.
 			var information = {};
@@ -74,7 +74,9 @@ class Graph
 			localStorage.setItem('information', JSON.stringify(information, null, '\t'));
 
 			/* Fazer update à informação para download. */
-			downloadTree();	
+			downloadTree();
+			
+			alert('Node information saved with success!');
 		} catch (e) {
 			if (e instanceof SyntaxError) {
 				alert('The syntax if not correct: ' + e);
