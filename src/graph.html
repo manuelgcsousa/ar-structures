@@ -88,7 +88,7 @@
 
 		<!-- GRAPH INFORMATION MODAL -->
 		<div class="modal fade" id="graph_information_modal" tabindex="-1" role="dialog" aria-hidden="true">
-			<div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+			<div class="modal-dialog modal-sm modal-dialog-scrollable" role="document">
 				<div class="modal-content">
 					
 					<div class="modal-header">
@@ -183,7 +183,7 @@
 
 		<!-- FILTER MODAL -->
 		<div class="modal fade" id="filter_node_modal" tabindex="-1" role="dialog" aria-hidden="true">
-			<div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+			<div class="modal-dialog modal-sm modal-dialog-scrollable" role="document">
 				<div class="modal-content">
 					
 					<div class="modal-header">
@@ -215,7 +215,7 @@
 						</p>
 						
 						<br/>
-						<button type="button" class="btn btn-primary" onclick="filterNodes()">Search</button>
+						<button type="button" class="btn btn-primary" data-toggle="modal" data-dismiss="modal" data-target="#graph_information_modal" onclick="filterNodes()">Search</button>
 					</div>
 				</div>
 			</div>
@@ -353,8 +353,21 @@
 						}
 					}
 				}
+				
+				const nodes_list = document.getElementById("nodes_list");
 
-				console.log(filteredNodes);
+				// Clean previous DOM's elements inside 'nodes_list'.
+				nodes_list.innerHTML = "";
+
+				filteredNodes.forEach(elem => {
+					nodes_list.innerHTML += ( 
+						'<li>' + 
+						'<button type="button" class="btn btn-primary" data-toggle="modal" data-dismiss="modal" data-target="#node_information_modal" onclick="Graph.getNodeInformation(\'' + elem + '\')">' + 
+						elem + 
+						'</button>' +
+						'</li></br>'
+					);
+				});
 			}
 		</script>
 	</body>
