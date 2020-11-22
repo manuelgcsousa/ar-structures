@@ -70,145 +70,158 @@
 
 	<body onload="genGraph()">
 		<div id="3d-graph"></div>
+		
+		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#graph_information_modal" onclick="Graph.getNodes()">
+			Graph Information
+		</button>
 
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-md-4" style="padding: 20px"></div>
-			</div>
+		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add_node_modal" onclick="populateTargetNodes()">
+			Add New Node	
+		</button>
 
-			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#graph_information_modal" onclick="Graph.getNodes()">
-				Graph Information
-			</button><br/>
+		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#filter_node_modal">
+			Filter Information
+		</button>
 
-			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add_node_modal" onclick="populateTargetNodes()">
-				Add New Node	
-			</button><br/>
+		<a id="downloadAnchorElem" class="btn btn-primary">Download Tree</a>
+		
 
-			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#filter_node_modal">
-				Filter Information
-			</button><br/>
+		<!-- GRAPH INFORMATION MODAL -->
+		<div class="modal fade" id="graph_information_modal" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+				<div class="modal-content">
+					
+					<div class="modal-header">
+						<h5 class="modal-title">Graph Information</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
 
-			<a id="downloadAnchorElem" class="btn btn-primary">Download Tree</a>
-
-
-			<!-- GRAPH INFORMATION MODAL -->
-			<div class="modal fade" id="graph_information_modal" tabindex="-1" role="dialog" aria-hidden="true">
-				<div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
-					<div class="modal-content">
-						
-						<div class="modal-header">
-							<h5 class="modal-title">Graph Information</h5>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-
-						<div class="modal-body">
-							<p id="nodes_block">
-								<!-- <p>&#10057; Nodes:</p> -->
-								<ul id="nodes_list"></ul>
-							</p>
-						</div>
+					<div class="modal-body">
+						<p id="nodes_block">
+							<!-- <p>&#10057; Nodes:</p> -->
+							<ul id="nodes_list"></ul>
+						</p>
 					</div>
 				</div>
 			</div>
-			<!-- END MODAL -->
-		
+		</div>
+		<!-- END MODAL -->
+	
 
-			<!-- NODE INFORMATION MODAL -->
-			<div class="modal fade" id="node_information_modal" tabindex="-1" role="dialog" aria-hidden="true">
-				<div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
-					<div class="modal-content">
-						
-						<div class="modal-header">
-							<h5 class="modal-title">Node Information</h5>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-
-						<div class="modal-body">
-							<p id="nodes_block">
-								<p>Data:</p>
-								<textarea id="node_data" name="node_data_text" rows="10" cols="80"></textarea>
-							</p>
-						</div>
-
-						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" data-target="#graph_information_modal">Back</button>
-							<button type="button" class="btn btn-primary" onclick="Graph.saveNodeData()">Save</button>
-						</div>
-		
+		<!-- NODE INFORMATION MODAL -->
+		<div class="modal fade" id="node_information_modal" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+				<div class="modal-content">
+					
+					<div class="modal-header">
+						<h5 class="modal-title">Node Information</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
 					</div>
+
+					<div class="modal-body">
+						<p id="nodes_block">
+							<p>Data:</p>
+							<textarea id="node_data" name="node_data_text" rows="10" cols="80"></textarea>
+						</p>
+					</div>
+
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-toggle="modal" data-dismiss="modal" data-target="#graph_information_modal">Back</button>
+						<button type="button" class="btn btn-primary" onclick="Graph.saveNodeData()">Save</button>
+					</div>
+	
 				</div>
 			</div>
-			<!-- END MODAL -->
+		</div>
+		<!-- END MODAL -->
 
 
-			<!-- ADD NODE MODAL -->
-			<div class="modal fade" id="add_node_modal" tabindex="-1" role="dialog" aria-hidden="true">
-				<div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
-					<div class="modal-content">
-						
-						<div class="modal-header">
-							<h5 class="modal-title">Add New Node</h5>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
+		<!-- ADD NODE MODAL -->
+		<div class="modal fade" id="add_node_modal" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+				<div class="modal-content">
+					
+					<div class="modal-header">
+						<h5 class="modal-title">Add New Node</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
 
-						<div class="modal-body">
+					<div class="modal-body">
+						<p>
+							<label style="display: block;" for="new_node">New Node:</label>
 							<input id="new_node" type="text"></input>
-							
+						</p>
+						
+						<p>
+							<label style="display: block;" for="target_links">Type of Link:</label>
 							<select id="target_links">
 								<option value="ascending">Ascending</option>
 								<option value="descending">Descending</option>
 								<option value="marriage">Marriage</option>
 							</select>
-
+						</p>
+						
+						<p>
+							<label style="display: block;" for="target_nodes">Target:</label>
 							<select id="target_nodes"></select>
-
-							<button type="button" class="btn btn-primary" onclick="addNewNode()">Add</button>
-						</div>
+						</p>
+						
+						<br/>
+						<button type="button" class="btn btn-primary" onclick="addNewNode()">Add</button>
 					</div>
 				</div>
 			</div>
-			<!-- END MODAL -->
+		</div>
+		<!-- END MODAL -->
 
 
-			<!-- FILTER MODAL -->
-			<div class="modal fade" id="filter_node_modal" tabindex="-1" role="dialog" aria-hidden="true">
-				<div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
-					<div class="modal-content">
-						
-						<div class="modal-header">
-							<h5 class="modal-title">Filter Information</h5>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
+		<!-- FILTER MODAL -->
+		<div class="modal fade" id="filter_node_modal" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+				<div class="modal-content">
+					
+					<div class="modal-header">
+						<h5 class="modal-title">Filter Information</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
 
-						<div class="modal-body">
+					<div class="modal-body">
+						<p>
+							<label style="display: block;" for="search_term">Search Term:</label>
 							<input id="search_term" type="text"></input>
-							
+						</p>
+						
+						<p>
+							<label style="display: block;" for="search_operation">Expression:</label>
 							<select id="search_operation">
 								<option value="equals">Equals ( == )</option>
 								<option value="not_equals">Not equals ( != )</option>
 								<option value="greater_than">Greater than ( &gt; )</option>
 								<option value="less_than">Less than ( &lt; )</option>
 							</select>
-
+						</p>
+						
+						<p>
+							<label style="display: block;" for="search_value">Search Value:</label>
 							<input id="search_value" type="text"></input>
-
-							<button type="button" class="btn btn-primary" onclick="filterNodes()">Search</button>
-						</div>
+						</p>
+						
+						<br/>
+						<button type="button" class="btn btn-primary" onclick="filterNodes()">Search</button>
 					</div>
 				</div>
 			</div>
-			<!-- END MODAL -->
+		</div>
+		<!-- END MODAL -->
 
-
-		</div><br/>
 
 		<script src="./js/main.js"></script>
 		<script>
@@ -292,16 +305,12 @@
 
 				const term = document.getElementById('search_term').value;
 				const operation = document.getElementById('search_operation').value;
-				const value = document.getElementById('search_value').value;
+				var value = document.getElementById('search_value').value;
 			
 				// Parse value and match type (if needed).
 				try {
 					value = JSON.parse(value);
-					console.log(typeof value);
-				} catch (exp) { console.log(exp); }
-				
-				console.log(value);
-				console.log(typeof value);
+				} catch (exp) { }
 
 				const information = JSON.parse(localStorage.getItem('information'));
 				for (node in information) {
@@ -309,8 +318,7 @@
 
 					if (term in nodeInfo) {
 						const data = nodeInfo[term];
-						console.log(data);
-						console.log(typeof data);
+						
 						if (typeof data === 'object' && Object.keys(data).length !== 0) {
 							const strData = JSON.stringify(data);
 
@@ -318,24 +326,27 @@
 								filteredNodes.push(node);
 						} else {
 							console.log(operation);
+							console.log(value);
+							console.log(data);
+
 							switch (operation) {
 								case 'equals':
-									if (term === data)
+									if (value === data)
 										filteredNodes.push(node);
 									break;
 
 								case 'not_equals':
-									if (term !== data)
+									if (value !== data)
 										filteredNodes.push(node);
 									break;
 
 								case 'greater_than':
-									if (term > data)
+									if (value > data)
 										filteredNodes.push(node);
 									break;
 
 								case 'less_than':
-									if (term < data)
+									if (value < data)
 										filteredNodes.push(node);
 									break;
 							}
